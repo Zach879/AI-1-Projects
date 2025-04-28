@@ -1,0 +1,301 @@
+% -------------------------------
+% Wumpus World Logical Agent in Prolog
+% -------------------------------
+
+% Declare dynamic predicates
+:- dynamic([
+    current_position/2,
+    current_orientation/1,
+    visited/2,
+    safe/2,
+    wumpus_alive/1,
+    have_gold/1,
+    wumpus_possible_positions/1,
+    pit_possible_positions/1,
+    wumpus_killed/1,
+    agent_mode/1,
+    path_history/1,
+    breeze_stuck_count/1
+]).
+
+% Initialize the agent's state
+init_agent :-
+    retractall(current_position(_, _)),
+    retractall(current_orientation(_)),
+    retractall(visited(_, _)),
+    retractall(safe(_, _)),
+    retractall(wumpus_alive(_)),
+    retractall(have_gold(_)),
+    retractall(wumpus_possible_positions(_)),
+    retractall(pit_possible_positions(_)),
+    retractall(wumpus_killed(_)),
+    retractall(agent_mode(_)),
+    retractall(path_history(_)),
+    retractall(breeze_stuck_count(_)),
+    
+    % Set initial states
+    assertz(current_position(1,1)),
+    assertz(current_orientation(0)),  % 0: East, 90: North, 180: West, 270: South
+    assertz(visited(1,1)),
+    assertz(safe(1,1)),
+    assertz(wumpus_alive(yes)),
+    assertz(have_gold(no)),
+    assertz(wumpus_possible_positions([])),
+    assertz(pit_possible_positions([])),
+    assertz(wumpus_killed(no)),
+    assertz(agent_mode(explore)),
+    assertz(path_history([(1,1)])),
+    assertz(breeze_stuck_count(0)).
+
+% Restart the agent (re-initialize)
+restart_agent :-
+    init_agent.
+
+% Define left and right turns
+left_turn(0, 90).
+left_turn(90, 180).
+left_turn(180, 270).
+left_turn(270, 0).
+
+right_turn(0, 270).
+right_turn(270, 180).
+right_turn(180, 90).
+right_turn(90, 0).
+
+% Orientation: 0=East, 90=North, 180=West, 270=South
+
+% Return adjacent squares (no diagonals)
+adjacent((X,Y),(X2,Y)) :- X2 is X+1, X2 >=1, X2 =<4.
+adjacent((X,Y),(X2,Y)) :- X2 is X-1, X2 >=1, X2 =<4.
+adjacent((X,Y),(X,Y2)) :- Y2 is Y+1, Y2 >=1, Y2 =<4.
+adjacent((X,Y),(X,Y2)) :- Y2 is Y-1, Y2 >=1, Y2 =<4.
+
+% A square is unsafe if it might contain a Wumpus or a pit
+unsafe(X,Y) :-
+    wumpus_possible_positions(WList),
+    pit_possible_positions(PList),
+    (member((X,Y), WList); member((X,Y), PList)).
+
+% Synchronize agent's state with the environment
+% This predicate assumes existence of environment predicates:
+% agent_location(X,Y), agent_orientation(D)
+% These predicates should be dynamically updated by the environment
+sync_agent_state :-
+    agent_location(X,Y),
+    agent_orientation(D),
+    retractall(current_position(_, _)),
+    retractall(current_orientation(_)),
+    assertz(current_position(X,Y)),
+    assertz(current_orientation(D)),
+    ( \+ visited(X,Y) -> assertz(visited(X,Y)) ; true ),
+    ( \+ safe(X,Y) -> assertz(safe(X,Y)) ; true ).
+
+% Update knowledge based on percepts
+% Percept list: [Stench, Breeze, Glitter, Bump, Scream]
+update_knowledge([Stench,Breeze,Glitter,Bump,Scream]) :-
+    sync_agent_state,
+    current_position(X,Y),
+    (Scream = yes ->
+        retract(wumpus_alive(_)),
+        assertz(wumpus_alive(no)),
+        retract(wumpus_possible_positions(_)),
+        assertz(wumpus_possible_positions([])),
+        assertz(wumpus_killed(yes))
+    ; true),
+
+    % Debugging output
+    format('DEBUG: Pos=(~w,~w) Stench=~w Breeze=~w Glitter=~w Bump=~w Scream=~w~n',
+           [X,Y,Stench,Breeze,Glitter,Bump,Scream]),
+
+    % Update Wumpus possible positions
+    ( Stench = yes, wumpus_alive(yes) ->
+        findall((Ax,Ay),
+            ( adjacent((X,Y),(Ax,Ay)),
+              \+ visited(Ax,Ay),
+              \+ safe(Ax,Ay)
+            ),
+            CandidatesW),
+        wumpus_possible_positions(OldW),
+        append(OldW, CandidatesW, CombinedW),
+        sort(CombinedW, NewW),
+        retract(wumpus_possible_positions(_)),
+        assertz(wumpus_possible_positions(NewW))
+    ; true ),
+
+    % Update Pit possible positions
+    ( Breeze = yes ->
+        findall((Px,Py),
+            ( adjacent((X,Y),(Px,Py)),
+              \+ visited(Px,Py),
+              \+ safe(Px,Py)
+            ),
+            CandidatesP),
+        pit_possible_positions(OldP),
+        append(OldP, CandidatesP, CombinedP),
+        sort(CombinedP, NewP),
+        retract(pit_possible_positions(_)),
+        assertz(pit_possible_positions(NewP))
+    ; true ).
+
+% Identify frontier squares (adjacent, unvisited, and not unsafe)
+frontier_squares(Frontier) :-
+    findall((Xv,Yv), visited(Xv,Yv), VisitedList),
+    findall((Xa,Ya),
+        ( member((Xv,Yv), VisitedList),
+          adjacent((Xv,Yv),(Xa,Ya)),
+          \+ visited(Xa,Ya),
+          \+ unsafe(Xa,Ya)
+        ),
+        FrontierRaw),
+    sort(FrontierRaw, Frontier).
+
+% Determine desired direction based on current and target positions
+desired_direction((X,Y), (Tx,Ty), Dir) :-
+    DX is Tx - X,
+    DY is Ty - Y,
+    ( DX = 1 -> Dir = 0    % East
+    ; DX = -1 -> Dir = 180  % West
+    ; DY = 1 -> Dir = 90   % North
+    ; DY = -1 -> Dir = 270  % South
+    ).
+
+% Determine the action needed to turn towards the desired direction
+turn_to_direction(CurrentD, GoalD, Action) :-
+    ( CurrentD = GoalD ->
+        Action = goforward
+    ; left_turn(CurrentD, Dl),
+      Dl = GoalD ->
+        Action = turnleft
+    ; right_turn(CurrentD, Dr),
+      Dr = GoalD ->
+        Action = turnright
+    ; Action = turnleft  % Default to turning left
+    ).
+
+% Update path history when moving to a new square
+update_path_history(X, Y) :-
+    path_history(Path),
+    append(Path, [(X, Y)], NewPath),
+    retractall(path_history(_)),
+    assertz(path_history(NewPath)),
+    assertz(visited(X, Y)),
+    assertz(safe(X, Y)).
+
+% Backtrack to the previous position
+backtrack(Action) :-
+    path_history(Path),
+    length(Path, Length),
+    Length > 1,  % Ensure there's a position to backtrack to
+    LastIndex is Length - 1,
+    nth1(LastIndex, Path, (PrevX, PrevY)),
+    current_position(CurrentX, CurrentY),
+    desired_direction((CurrentX, CurrentY), (PrevX, PrevY), GoalDir),
+    current_orientation(D),
+    turn_to_direction(D, GoalDir, Action),
+    % Update path history by removing the current position
+    retractall(path_history(_)),
+    assertz(path_history([(PrevX, PrevY)|Path])).
+
+% Decide on the next action based on current percepts and state
+% Percept list: [Stench, Breeze, Glitter, Bump, Scream]
+decide_action([_Stench,Breeze,Glitter,Bump,_Scream], Action) :-
+    have_gold(G),
+    current_position(X,Y),
+    current_orientation(D),
+    breeze_stuck_count(BC),
+
+    ( (Glitter = yes, G = no) ->
+        Action = grab,
+        retract(have_gold(_)),
+        assertz(have_gold(yes)),
+        format('DECIDE: Grabbing gold.~n')
+    ; (G = yes, X = 1, Y = 1) ->
+        Action = climb,
+        format('DECIDE: Climbing out with gold.~n')
+    ; (Bump = yes) ->
+        Action = turnleft,
+        format('DECIDE: Bumped into a wall, turning left.~n')
+    ; (Breeze = yes, Glitter = no) ->
+        % Handle breeze with stuck counter
+        NewBC is BC + 1,
+        retractall(breeze_stuck_count(_)),
+        assertz(breeze_stuck_count(NewBC)),
+        ( NewBC < 3 ->
+            Action = turnleft,
+            format('DECIDE: Breeze detected, turning left.~n')
+        ; NewBC = 3 ->
+            % After turning left 3 times, attempt to backtrack
+            backtrack(Action),
+            format('DECIDE: Breeze stuck, initiating backtrack.~n')
+        )
+    ;
+        % No immediate danger, reset breeze stuck count
+        retractall(breeze_stuck_count(_)),
+        assertz(breeze_stuck_count(0)),
+        frontier_squares(Frontier),
+        ( Frontier = [] ->
+            % No frontier squares, attempt to backtrack
+            backtrack(Action),
+            format('DECIDE: No frontier squares, backtracking.~n')
+        ; Frontier = [(Fx, Fy)|_],
+          desired_direction((X, Y), (Fx, Fy), GoalDir),
+          turn_to_direction(D, GoalDir, Action),
+          format('DECIDE: Moving towards frontier square (~w, ~w).~n', [Fx, Fy])
+        )
+    ).
+
+% Run the agent based on percepts
+% Percept list: [Stench, Breeze, Glitter, Bump, Scream]
+run_agent(Percepts, Action) :-
+    update_knowledge(Percepts),
+    decide_action(Percepts, Action).
+
+% -------------------------------
+% Trial Runner Implementation
+% -------------------------------
+
+% Initialize and run trials
+run_trials(Actions, Score, Iterations) :-
+    init_agent,
+    run_trial([], 0, 100, Actions, Score, Iterations).
+
+% run_trial(CurrentActions, CurrentScore, IterationsLeft, FinalActions, FinalScore, FinalIterations)
+run_trial(ActionsAcc, ScoreAcc, IterationsLeft, FinalActions, FinalScore, FinalIterations) :-
+    IterationsLeft > 0,
+    % Get current percepts from the environment
+    get_percepts(Percepts),
+    run_agent(Percepts, Action),
+    execute_action(Action, NewPercepts, ActionResult),
+    update_score(Action, ActionResult, ActionScore),
+    NewScoreAcc is ScoreAcc + ActionScore,
+    append(ActionsAcc, [Action], NewActionsAcc),
+    
+    % Update path history if the action was successful movement
+    ( Action = goforward, ActionResult = continue ->
+        current_position(X, Y),
+        update_path_history(X, Y)
+    ; true ),
+    
+    (
+        Action = climb ->
+            FinalActions = NewActionsAcc,
+            FinalScore = NewScoreAcc,
+            FinalIterations = (100 - IterationsLeft + 1),
+            !
+    ; 
+        ActionResult = dead ->
+            FinalActions = NewActionsAcc,
+            FinalScore = NewScoreAcc,
+            FinalIterations = (100 - IterationsLeft + 1),
+            !
+    ;
+        NewIterationsLeft is IterationsLeft - 1,
+        run_trial(NewActionsAcc, NewScoreAcc, NewIterationsLeft, FinalActions, FinalScore, FinalIterations)
+    ).
+
+% Base case when iterations reach 0
+run_trial(ActionsAcc, ScoreAcc, 0, FinalActions, FinalScore, FinalIterations) :-
+    FinalActions = ActionsAcc,
+    FinalScore = ScoreAcc,
+    FinalIterations = 100,
+    format('Reached iteration limit.~n').

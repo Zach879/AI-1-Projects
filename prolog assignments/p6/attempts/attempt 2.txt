@@ -1,0 +1,195 @@
+:- dynamic([
+    current_position/2,
+    current_orientation/1,
+    visited/2,
+    safe/2,
+    wumpus_alive/1,
+    have_gold/1,
+    wumpus_possible_positions/1,
+    pit_possible_positions/1,
+    wumpus_killed/1,
+    backtrack_path/1,
+    agent_mode/1,
+    breeze_count/1
+]).
+
+init_agent :-
+    retractall(current_position(_,_)),
+    retractall(current_orientation(_)),
+    retractall(visited(_,_)),
+    retractall(safe(_,_)),
+    retractall(wumpus_alive(_)),
+    retractall(have_gold(_)),
+    retractall(wumpus_possible_positions(_)),
+    retractall(pit_possible_positions(_)),
+    retractall(wumpus_killed(_)),
+    retractall(backtrack_path(_)),
+    retractall(agent_mode(_)),
+    retractall(breeze_count(_)),
+    assertz(have_gold(no)),
+    assertz(wumpus_alive(yes)),
+    assertz(wumpus_possible_positions([])),
+    assertz(pit_possible_positions([])),
+    assertz(wumpus_killed(no)),
+    assertz(backtrack_path([])),
+    assertz(agent_mode(explore)),
+    assertz(breeze_count(0)).
+
+restart_agent :-
+    init_agent.
+
+left_turn(0,90).
+left_turn(90,180).
+left_turn(180,270).
+left_turn(270,0).
+
+right_turn(0,270).
+right_turn(270,180).
+right_turn(180,90).
+right_turn(90,0).
+
+% Orientation: 0=east, 90=north,180=west,270=south
+
+% Return adjacent squares (no diagonals)
+adjacent((X,Y),(X2,Y)) :- X2 is X+1, X2>=1,X2=<4.
+adjacent((X,Y),(X2,Y)) :- X2 is X-1, X2>=1,X2=<4.
+adjacent((X,Y),(X,Y2)) :- Y2 is Y+1, Y2>=1,Y2=<4.
+adjacent((X,Y),(X,Y2)) :- Y2 is Y-1, Y2>=1,Y2=<4.
+
+% unsafe/2: A square is unsafe if it is possibly containing a Wumpus.
+unsafe(X,Y) :-
+    wumpus_possible_positions(WList),
+    member((X,Y),WList).
+
+sync_agent_state :-
+    agent_location(X,Y),
+    agent_orientation(D),
+    retractall(current_position(_,_)),
+    retractall(current_orientation(_)),
+    assertz(current_position(X,Y)),
+    assertz(current_orientation(D)),
+    ( \+ visited(X,Y) -> assertz(visited(X,Y)) ; true ),
+    ( \+ safe(X,Y) -> assertz(safe(X,Y)) ; true ).
+
+update_knowledge([Stench,Breeze,Glitter,Bump,Scream]) :-
+    sync_agent_state,
+    current_position(X,Y),
+    (Scream = yes ->
+        retract(wumpus_alive(_)),
+        assertz(wumpus_alive(no)),
+        assertz(wumpus_killed(yes)),
+        % Wumpus is dead, no more unsafe squares due to wumpus
+        retract(wumpus_possible_positions(_)),
+        assertz(wumpus_possible_positions([]))
+    ; true),
+
+    write('DEBUG: Pos='),write((X,Y)),
+    write(' Stench='),write(Stench),
+    write(' Breeze='),write(Breeze),
+    write(' Glitter='),write(Glitter),
+    write(' Bump='),write(Bump),
+    write(' Scream='),write(Scream),nl,
+
+    % If there's stench and Wumpus is alive, add adjacent unknown squares as possible Wumpus
+    ( Stench = yes,
+      wumpus_alive(yes) ->
+        findall((Ax,Ay),
+          ( adjacent((X,Y),(Ax,Ay)),
+            \+ visited(Ax,Ay),
+            \+ safe(Ax,Ay) ),
+          Candidates),
+        wumpus_possible_positions(Old),
+        append(Old,Candidates,Combined),
+        sort(Combined,New),
+        retract(wumpus_possible_positions(_)),
+        assertz(wumpus_possible_positions(New))
+    ; true).
+
+% Compute frontier squares: squares adjacent to visited squares that are:
+% - in bounds
+% - not visited
+% - not unsafe
+frontier_squares(Frontier) :-
+    findall((Xv,Yv), visited(Xv,Yv), VisitedList),
+    findall((Xa,Ya),
+       ( member((Xv,Yv), VisitedList),
+         adjacent((Xv,Yv),(Xa,Ya)),
+         \+ visited(Xa,Ya),
+         \+ unsafe(Xa,Ya)
+       ), FrontierRaw),
+    sort(FrontierRaw,Frontier).
+
+% Helper to orient towards a target square
+desired_direction((X,Y),(Tx,Ty),Dir) :-
+    DX is Tx - X, DY is Ty - Y,
+    ( abs(DX) > abs(DY) ->
+        (DX > 0 -> Dir = 0 ; Dir=180)
+    ; (DY > 0 -> Dir = 90; Dir=270)
+    ).
+
+% Turn to face a direction from current direction
+turn_to_direction(CurrentD,GoalD,Action) :-
+    (CurrentD = GoalD -> Action = goforward
+    ; left_turn(CurrentD,Dl), Dl = GoalD -> Action = turnleft
+    ; right_turn(CurrentD,Dr), Dr = GoalD -> Action = turnright
+    ; % if neither left nor right matches directly, just turn left as fallback
+      Action = turnleft
+    ).
+
+decide_action([_Stench,Breeze,Glitter,Bump,_Scream],Action) :-
+    have_gold(G),
+    current_position(X,Y),
+    current_orientation(D),
+    breeze_count(Cnt),
+    ( (Glitter = yes, G = no) ->
+        Action = grab,
+        retract(have_gold(_)),
+        assertz(have_gold(yes)),
+        write('DECIDE: Grabbing gold.\n'),
+        retract(breeze_count(_)),assertz(breeze_count(0))
+    ; (G = yes, X=1, Y=1) ->
+        Action = climb,
+        write('DECIDE: Climbing out with gold.\n'),
+        retract(breeze_count(_)),assertz(breeze_count(0))
+    ; (Bump = yes) ->
+        Action = turnleft,
+        write('DECIDE: Bumped, turning left.\n'),
+        retract(breeze_count(_)),assertz(breeze_count(0))
+    ; (Breeze = yes, Glitter = no) ->
+        % Increment breeze count
+        NewCnt is Cnt + 1,
+        retract(breeze_count(_)),assertz(breeze_count(NewCnt)),
+        ( NewCnt = 1 ->
+            Action = turnleft,
+            write('DECIDE: Breeze #1, turning left.\n')
+        ; NewCnt = 2 ->
+            Action = turnright,
+            write('DECIDE: Breeze #2, turning right.\n')
+        ; NewCnt = 3 ->
+            Action = goforward,
+            write('DECIDE: Breeze #3, trying forward.\n')
+        ; 
+          retract(breeze_count(_)),assertz(breeze_count(0)),
+          Action = turnleft,
+          write('DECIDE: Breeze >3, restarting pattern, turn left.\n')
+        )
+    ;
+        % No breeze, no bump, no immediate gold conditions
+        retract(breeze_count(_)),assertz(breeze_count(0)),
+        % Check frontier for new squares to explore
+        frontier_squares(Frontier),
+        ( Frontier = [] ->
+            % No frontier? Just go forward as before
+            Action = goforward,
+            write('DECIDE: Safe to move forward (no frontier).\n')
+        ; % We have some frontier squares. Pick one (e.g., head of the list).
+          Frontier = [(Fx,Fy)|_],
+          desired_direction((X,Y),(Fx,Fy),GoalDir),
+          turn_to_direction(D,GoalDir,Action),
+          write('DECIDE: Moving towards frontier square '),write((Fx,Fy)),write('.\n')
+        )
+    ).
+
+run_agent(Percept,Action) :-
+    update_knowledge(Percept),
+    decide_action(Percept,Action).

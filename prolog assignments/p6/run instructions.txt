@@ -1,0 +1,3 @@
+[wumpus], [run_trials], [agents], set_prolog_flag(answer_write_options, [max_depth(0)]).
+
+cd('C:/Users/zcrzc/OneDrive/Documents/AI - GRAD/prolog assignments/p6').

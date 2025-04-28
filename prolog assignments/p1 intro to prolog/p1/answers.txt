@@ -1,0 +1,9 @@
+?- likes(george, dio).
+true .
+
+?- likes(tarkus, Who). %new variable must start with capital letter or underscore
+Who = dio.
+
+?- likes(george, Who).%enter ; to indicate more processing to be done
+Who = dio ;
+Who = jonathan

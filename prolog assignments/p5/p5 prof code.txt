@@ -1,0 +1,52 @@
+Loop(10) :- !.
+
+Loop(N) :-
+	writeln(N),
+	N1 is N + 1,
+	loop(N1).
+%above code is an example given by the prof to show how to loop to 10
+
+inner_loop( []) :-
+	agent_health(dead),
+	!.
+
+inner_loop(_, _, []) :-
+	agent_in_cave(no),
+	!.
+	
+
+inner_loop(NumActions, _, []) :-
+	max_agent_actions (N),
+	NumActions > N,
+	!.
+
+inner_loop(NumActions, Percept, [Action | Actions]) :-
+	run_agent (Percept, Action),
+	execute(Action, NewPercept),
+	NumActions1 is NumActions + 1,
+	inner_loop(NumActions1, NewPercept, Actions).
+	
+
+
+
+NOTE: BELOW IS NOTES ONLY (not code)!!!!!
+prof running above code to test:
+
+?- initialize(P), init_agent(), inner_loop(0, P, A).
+P = [no, no, no, no, no],
+A = [goforward, turnleft, goforward, goforward, grab, turnleft, turnleft, goforward,
+goforward| ... ].
+
+?- set_prolog_flag(answer_write_options, [max_depth(0)]).
+true.
+
+?- set_prolog_flag(answer_write_options, [max_depth(0)]).
+true.
+
+?- initialize(P), init_agent(), inner_loop(0, P, A).
+P = [no,no,no, no, no],
+A = [goforward, turnleft, goforward, goforward, grab, turnleft, turnleft, goforward, goforwa
+rd, turnright, goforward, climb].
+
+
+prof said to "run it like this: run_agent(Actions, Score, Iterations). those things will all be bound."

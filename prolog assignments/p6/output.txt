@@ -1,0 +1,200 @@
+DEBUG: Pos=1,1 Stench=no Breeze=no Glitter=no Bump=no Scream=no
+DECIDE: Moving towards frontier square 1,2.
+DEBUG: Pos=1,1 Stench=no Breeze=no Glitter=no Bump=no Scream=no
+DECIDE: Moving towards frontier square 1,2.
+DEBUG: Pos=1,2 Stench=yes Breeze=no Glitter=no Bump=no Scream=no
+DECIDE: Moving towards frontier square 2,1.
+DEBUG: Pos=1,2 Stench=yes Breeze=no Glitter=no Bump=no Scream=no
+DECIDE: Moving towards frontier square 2,1.
+DEBUG: Pos=1,2 Stench=yes Breeze=no Glitter=no Bump=no Scream=no
+DECIDE: Moving towards frontier square 2,1.
+DEBUG: Pos=1,1 Stench=no Breeze=no Glitter=no Bump=no Scream=no
+DECIDE: Moving towards frontier square 2,1.
+DEBUG: Pos=1,1 Stench=no Breeze=no Glitter=no Bump=no Scream=no
+DECIDE: Moving towards frontier square 2,1.
+DEBUG: Pos=2,1 Stench=no Breeze=yes Glitter=no Bump=no Scream=no
+DECIDE: Breeze #1, turning left.
+DEBUG: Pos=2,1 Stench=no Breeze=yes Glitter=no Bump=no Scream=no
+DECIDE: Breeze #2, turning right.
+DEBUG: Pos=2,1 Stench=no Breeze=yes Glitter=no Bump=no Scream=no
+DECIDE: Breeze #3, trying forward.
+DEBUG: Pos=1,1 Stench=no Breeze=no Glitter=no Bump=no Scream=no
+DECIDE: Moving towards frontier square 1,2.
+DEBUG: Pos=1,1 Stench=no Breeze=no Glitter=no Bump=no Scream=no
+DECIDE: Moving towards frontier square 1,2.
+DEBUG: Pos=1,2 Stench=yes Breeze=no Glitter=no Bump=no Scream=no
+DECIDE: Moving towards frontier square 2,1.
+DEBUG: Pos=1,2 Stench=yes Breeze=no Glitter=no Bump=no Scream=no
+DECIDE: Moving towards frontier square 2,1.
+DEBUG: Pos=1,2 Stench=yes Breeze=no Glitter=no Bump=no Scream=no
+DECIDE: Moving towards frontier square 2,1.
+DEBUG: Pos=1,1 Stench=no Breeze=no Glitter=no Bump=no Scream=no
+DECIDE: Moving towards frontier square 2,1.
+DEBUG: Pos=1,1 Stench=no Breeze=no Glitter=no Bump=no Scream=no
+DECIDE: Moving towards frontier square 2,1.
+DEBUG: Pos=2,1 Stench=no Breeze=yes Glitter=no Bump=no Scream=no
+DECIDE: Breeze #1, turning left.
+DEBUG: Pos=2,1 Stench=no Breeze=yes Glitter=no Bump=no Scream=no
+DECIDE: Breeze #2, turning right.
+DEBUG: Pos=2,1 Stench=no Breeze=yes Glitter=no Bump=no Scream=no
+DECIDE: Breeze #3, trying forward.
+DEBUG: Pos=1,1 Stench=no Breeze=no Glitter=no Bump=no Scream=no
+DECIDE: Moving towards frontier square 1,2.
+DEBUG: Pos=1,1 Stench=no Breeze=no Glitter=no Bump=no Scream=no
+DECIDE: Moving towards frontier square 1,2.
+DEBUG: Pos=1,2 Stench=yes Breeze=no Glitter=no Bump=no Scream=no
+DECIDE: Moving towards frontier square 2,1.
+DEBUG: Pos=1,2 Stench=yes Breeze=no Glitter=no Bump=no Scream=no
+DECIDE: Moving towards frontier square 2,1.
+DEBUG: Pos=1,2 Stench=yes Breeze=no Glitter=no Bump=no Scream=no
+DECIDE: Moving towards frontier square 2,1.
+DEBUG: Pos=1,1 Stench=no Breeze=no Glitter=no Bump=no Scream=no
+DECIDE: Moving towards frontier square 2,1.
+DEBUG: Pos=1,1 Stench=no Breeze=no Glitter=no Bump=no Scream=no
+DECIDE: Moving towards frontier square 2,1.
+DEBUG: Pos=2,1 Stench=no Breeze=yes Glitter=no Bump=no Scream=no
+DECIDE: Breeze #1, turning left.
+DEBUG: Pos=2,1 Stench=no Breeze=yes Glitter=no Bump=no Scream=no
+DECIDE: Breeze #2, turning right.
+DEBUG: Pos=2,1 Stench=no Breeze=yes Glitter=no Bump=no Scream=no
+DECIDE: Breeze #3, trying forward.
+DEBUG: Pos=1,1 Stench=no Breeze=no Glitter=no Bump=no Scream=no
+DECIDE: Moving towards frontier square 1,2.
+DEBUG: Pos=1,1 Stench=no Breeze=no Glitter=no Bump=no Scream=no
+DECIDE: Moving towards frontier square 1,2.
+DEBUG: Pos=1,2 Stench=yes Breeze=no Glitter=no Bump=no Scream=no
+DECIDE: Moving towards frontier square 2,1.
+DEBUG: Pos=1,2 Stench=yes Breeze=no Glitter=no Bump=no Scream=no
+DECIDE: Moving towards frontier square 2,1.
+DEBUG: Pos=1,2 Stench=yes Breeze=no Glitter=no Bump=no Scream=no
+DECIDE: Moving towards frontier square 2,1.
+DEBUG: Pos=1,1 Stench=no Breeze=no Glitter=no Bump=no Scream=no
+DECIDE: Moving towards frontier square 2,1.
+DEBUG: Pos=1,1 Stench=no Breeze=no Glitter=no Bump=no Scream=no
+DECIDE: Moving towards frontier square 2,1.
+DEBUG: Pos=2,1 Stench=no Breeze=yes Glitter=no Bump=no Scream=no
+DECIDE: Breeze #1, turning left.
+DEBUG: Pos=2,1 Stench=no Breeze=yes Glitter=no Bump=no Scream=no
+DECIDE: Breeze #2, turning right.
+DEBUG: Pos=2,1 Stench=no Breeze=yes Glitter=no Bump=no Scream=no
+DECIDE: Breeze #3, trying forward.
+DEBUG: Pos=1,1 Stench=no Breeze=no Glitter=no Bump=no Scream=no
+DECIDE: Moving towards frontier square 1,2.
+DEBUG: Pos=1,1 Stench=no Breeze=no Glitter=no Bump=no Scream=no
+DECIDE: Moving towards frontier square 1,2.
+DEBUG: Pos=1,2 Stench=yes Breeze=no Glitter=no Bump=no Scream=no
+DECIDE: Moving towards frontier square 2,1.
+DEBUG: Pos=1,2 Stench=yes Breeze=no Glitter=no Bump=no Scream=no
+DECIDE: Moving towards frontier square 2,1.
+DEBUG: Pos=1,2 Stench=yes Breeze=no Glitter=no Bump=no Scream=no
+DECIDE: Moving towards frontier square 2,1.
+DEBUG: Pos=1,1 Stench=no Breeze=no Glitter=no Bump=no Scream=no
+DECIDE: Moving towards frontier square 2,1.
+DEBUG: Pos=1,1 Stench=no Breeze=no Glitter=no Bump=no Scream=no
+DECIDE: Moving towards frontier square 2,1.
+DEBUG: Pos=2,1 Stench=no Breeze=yes Glitter=no Bump=no Scream=no
+DECIDE: Breeze #1, turning left.
+DEBUG: Pos=2,1 Stench=no Breeze=yes Glitter=no Bump=no Scream=no
+DECIDE: Breeze #2, turning right.
+DEBUG: Pos=2,1 Stench=no Breeze=yes Glitter=no Bump=no Scream=no
+DECIDE: Breeze #3, trying forward.
+DEBUG: Pos=1,1 Stench=no Breeze=no Glitter=no Bump=no Scream=no
+DECIDE: Moving towards frontier square 1,2.
+DEBUG: Pos=1,1 Stench=no Breeze=no Glitter=no Bump=no Scream=no
+DECIDE: Moving towards frontier square 1,2.
+DEBUG: Pos=1,2 Stench=yes Breeze=no Glitter=no Bump=no Scream=no
+DECIDE: Moving towards frontier square 2,1.
+DEBUG: Pos=1,2 Stench=yes Breeze=no Glitter=no Bump=no Scream=no
+DECIDE: Moving towards frontier square 2,1.
+DEBUG: Pos=1,2 Stench=yes Breeze=no Glitter=no Bump=no Scream=no
+DECIDE: Moving towards frontier square 2,1.
+DEBUG: Pos=1,1 Stench=no Breeze=no Glitter=no Bump=no Scream=no
+DECIDE: Moving towards frontier square 2,1.
+DEBUG: Pos=1,1 Stench=no Breeze=no Glitter=no Bump=no Scream=no
+DECIDE: Moving towards frontier square 2,1.
+DEBUG: Pos=2,1 Stench=no Breeze=yes Glitter=no Bump=no Scream=no
+DECIDE: Breeze #1, turning left.
+DEBUG: Pos=2,1 Stench=no Breeze=yes Glitter=no Bump=no Scream=no
+DECIDE: Breeze #2, turning right.
+DEBUG: Pos=2,1 Stench=no Breeze=yes Glitter=no Bump=no Scream=no
+DECIDE: Breeze #3, trying forward.
+DEBUG: Pos=1,1 Stench=no Breeze=no Glitter=no Bump=no Scream=no
+DECIDE: Moving towards frontier square 1,2.
+DEBUG: Pos=1,1 Stench=no Breeze=no Glitter=no Bump=no Scream=no
+DECIDE: Moving towards frontier square 1,2.
+DEBUG: Pos=1,2 Stench=yes Breeze=no Glitter=no Bump=no Scream=no
+DECIDE: Moving towards frontier square 2,1.
+DEBUG: Pos=1,2 Stench=yes Breeze=no Glitter=no Bump=no Scream=no
+DECIDE: Moving towards frontier square 2,1.
+DEBUG: Pos=1,2 Stench=yes Breeze=no Glitter=no Bump=no Scream=no
+DECIDE: Moving towards frontier square 2,1.
+DEBUG: Pos=1,1 Stench=no Breeze=no Glitter=no Bump=no Scream=no
+DECIDE: Moving towards frontier square 2,1.
+DEBUG: Pos=1,1 Stench=no Breeze=no Glitter=no Bump=no Scream=no
+DECIDE: Moving towards frontier square 2,1.
+DEBUG: Pos=2,1 Stench=no Breeze=yes Glitter=no Bump=no Scream=no
+DECIDE: Breeze #1, turning left.
+DEBUG: Pos=2,1 Stench=no Breeze=yes Glitter=no Bump=no Scream=no
+DECIDE: Breeze #2, turning right.
+DEBUG: Pos=2,1 Stench=no Breeze=yes Glitter=no Bump=no Scream=no
+DECIDE: Breeze #3, trying forward.
+DEBUG: Pos=1,1 Stench=no Breeze=no Glitter=no Bump=no Scream=no
+DECIDE: Moving towards frontier square 1,2.
+DEBUG: Pos=1,1 Stench=no Breeze=no Glitter=no Bump=no Scream=no
+DECIDE: Moving towards frontier square 1,2.
+DEBUG: Pos=1,2 Stench=yes Breeze=no Glitter=no Bump=no Scream=no
+DECIDE: Moving towards frontier square 2,1.
+DEBUG: Pos=1,2 Stench=yes Breeze=no Glitter=no Bump=no Scream=no
+DECIDE: Moving towards frontier square 2,1.
+DEBUG: Pos=1,2 Stench=yes Breeze=no Glitter=no Bump=no Scream=no
+DECIDE: Moving towards frontier square 2,1.
+DEBUG: Pos=1,1 Stench=no Breeze=no Glitter=no Bump=no Scream=no
+DECIDE: Moving towards frontier square 2,1.
+DEBUG: Pos=1,1 Stench=no Breeze=no Glitter=no Bump=no Scream=no
+DECIDE: Moving towards frontier square 2,1.
+DEBUG: Pos=2,1 Stench=no Breeze=yes Glitter=no Bump=no Scream=no
+DECIDE: Breeze #1, turning left.
+DEBUG: Pos=2,1 Stench=no Breeze=yes Glitter=no Bump=no Scream=no
+DECIDE: Breeze #2, turning right.
+DEBUG: Pos=2,1 Stench=no Breeze=yes Glitter=no Bump=no Scream=no
+DECIDE: Breeze #3, trying forward.
+DEBUG: Pos=1,1 Stench=no Breeze=no Glitter=no Bump=no Scream=no
+DECIDE: Moving towards frontier square 1,2.
+DEBUG: Pos=1,1 Stench=no Breeze=no Glitter=no Bump=no Scream=no
+DECIDE: Moving towards frontier square 1,2.
+DEBUG: Pos=1,2 Stench=yes Breeze=no Glitter=no Bump=no Scream=no
+DECIDE: Moving towards frontier square 2,1.
+DEBUG: Pos=1,2 Stench=yes Breeze=no Glitter=no Bump=no Scream=no
+DECIDE: Moving towards frontier square 2,1.
+DEBUG: Pos=1,2 Stench=yes Breeze=no Glitter=no Bump=no Scream=no
+DECIDE: Moving towards frontier square 2,1.
+DEBUG: Pos=1,1 Stench=no Breeze=no Glitter=no Bump=no Scream=no
+DECIDE: Moving towards frontier square 2,1.
+DEBUG: Pos=1,1 Stench=no Breeze=no Glitter=no Bump=no Scream=no
+DECIDE: Moving towards frontier square 2,1.
+DEBUG: Pos=2,1 Stench=no Breeze=yes Glitter=no Bump=no Scream=no
+DECIDE: Breeze #1, turning left.
+DEBUG: Pos=2,1 Stench=no Breeze=yes Glitter=no Bump=no Scream=no
+DECIDE: Breeze #2, turning right.
+DEBUG: Pos=2,1 Stench=no Breeze=yes Glitter=no Bump=no Scream=no
+DECIDE: Breeze #3, trying forward.
+DEBUG: Pos=1,1 Stench=no Breeze=no Glitter=no Bump=no Scream=no
+DECIDE: Moving towards frontier square 1,2.
+DEBUG: Pos=1,1 Stench=no Breeze=no Glitter=no Bump=no Scream=no
+DECIDE: Moving towards frontier square 1,2.
+DEBUG: Pos=1,2 Stench=yes Breeze=no Glitter=no Bump=no Scream=no
+DECIDE: Moving towards frontier square 2,1.
+DEBUG: Pos=1,2 Stench=yes Breeze=no Glitter=no Bump=no Scream=no
+DECIDE: Moving towards frontier square 2,1.
+DEBUG: Pos=1,2 Stench=yes Breeze=no Glitter=no Bump=no Scream=no
+DECIDE: Moving towards frontier square 2,1.
+DEBUG: Pos=1,1 Stench=no Breeze=no Glitter=no Bump=no Scream=no
+DECIDE: Moving towards frontier square 2,1.
+DEBUG: Pos=1,1 Stench=no Breeze=no Glitter=no Bump=no Scream=no
+DECIDE: Moving towards frontier square 2,1.
+DEBUG: Pos=2,1 Stench=no Breeze=yes Glitter=no Bump=no Scream=no
+DECIDE: Breeze #1, turning left.
+DEBUG: Pos=2,1 Stench=no Breeze=yes Glitter=no Bump=no Scream=no
+DECIDE: Breeze #2, turning right.
+DEBUG: Pos=2,1 Stench=no Breeze=yes Glitter=no Bump=no Scream=no
+DECIDE: Breeze #3, trying forward.
